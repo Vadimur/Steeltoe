@@ -15,14 +15,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{473B57
 		..\..\azure-pipelines.yml = ..\..\azure-pipelines.yml
 		..\..\codecov.yml = ..\..\codecov.yml
 		..\..\coverlet.runsettings = ..\..\coverlet.runsettings
-		..\..\DeterministicBuild.targets = ..\..\DeterministicBuild.targets
-		..\..\Directory.Build.targets = ..\..\Directory.Build.targets
 		..\..\nuget.config = ..\..\nuget.config
 		..\..\sharedproject.props = ..\..\sharedproject.props
 		..\..\sharedtest.props = ..\..\sharedtest.props
 		..\..\Steeltoe.ruleset = ..\..\Steeltoe.ruleset
 		..\..\stylecop.json = ..\..\stylecop.json
-		..\..\targetframework.props = ..\..\targetframework.props
 		..\..\versions.props = ..\..\versions.props
 	EndProjectSection
 EndProject
