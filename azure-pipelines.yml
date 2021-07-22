@@ -13,9 +13,28 @@ pr:
 jobs:
 - job: Quick_Response
   timeoutInMinutes: 20
+  variables:
+    DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+    DOTNET_CLI_TELEMETRY_OPTOUT: 1
+    PackageVersion: $[format('3.1.1-{0}', variables['Build.BuildId'])]
   pool:
     vmImage: ubuntu-latest
   steps:
+  - pwsh: |
+      if ($env:PackageVersionOverride) {
+          $env:PackageVersion = $env:PackageVersionOverride
+      }
+      Write-Host "##vso[build.updatebuildnumber]$env:PackageVersion"
+      Write-Host "##vso[task.setvariable variable=PackageVersion;isOutput=true;]$env:PackageVersion"
+      $prefix = $env:PackageVersion.Split('-')[0]
+      $suffix = $env:PackageVersion.Split('-')[1]
+      Write-Host "##vso[task.setvariable variable=VersionPrefix;isOutput=true;]$prefix"
+      Write-Host "##vso[task.setvariable variable=VersionSuffix;isOutput=true;]$suffix"
+    displayName: Set build variables
+    name: buildVars
+    env:
+      PackageVersion: $(PackageVersion)
+      PackageVersionOverride: $(PackageVersionOverride)
   - task: DotNetCoreCLI@2
     displayName: dotnet restore
     inputs:
@@ -41,7 +60,9 @@ jobs:
   variables:
     DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
     DOTNET_CLI_TELEMETRY_OPTOUT: 1
-    PackageVersion: $[format('3.1.1-{0}', variables['Build.BuildId'])]
+    PackageVersion: $[dependencies.Quick_Response.outputs['buildVars.PackageVersion']]
+    VersionPrefix: $[dependencies.Quick_Response.outputs['buildVars.VersionPrefix']]
+    VersionSuffix: $[dependencies.Quick_Response.outputs['buildVars.VersionSuffix']]
   strategy:
     matrix:
       Linux:
@@ -59,20 +80,6 @@ jobs:
   pool:
     vmImage: $(imageName)
   steps:
-  - pwsh: |
-      if ($env:PackageVersionOverride) {
-          $env:PackageVersion = $env:PackageVersionOverride
-      }
-      Write-Host "##vso[build.updatebuildnumber]$env:PackageVersion"
-      Write-Host "##vso[task.setvariable variable=PackageVersion;]$env:PackageVersion"
-      $prefix = $env:PackageVersion.Split('-')[0]
-      $suffix = $env:PackageVersion.Split('-')[1]
-      Write-Host "##vso[task.setvariable variable=VersionPrefix;]$prefix"
-      Write-Host "##vso[task.setvariable variable=VersionSuffix;]$suffix"
-    displayName: Set build variables
-    env:
-      PackageVersion: $(PackageVersion)
-      PackageVersionOverride: $(PackageVersionOverride)
   - task: DotNetCoreCLI@2
     displayName: dotnet restore
     inputs:
@@ -88,7 +95,7 @@ jobs:
       organization: steeltoeoss
       projectKey: SteeltoeOSS_steeltoe
       extraProperties: |
-          sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/**/*opencover.xml
+          sonar.coverageReportPaths=$(Build.ArtifactStagingDirectory)/CodeCoverage/*/SonarQube.xml
           sonar.cs.vstest.reportsPaths=$(Build.SourcesDirectory)/*.trx
           sonar.exclusions=$(Build.SourcesDirectory)/src/Management/src/Diagnostics*
           sonar.coverage.exclusions=**/test/**/*
@@ -128,9 +135,9 @@ jobs:
     condition: and(succeededOrFailed(), or(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['integrationTests'], 'true')))
     displayName: Consolidate coverage for this job
     inputs:
-      reports: $(Build.SourcesDirectory)/**/*opencover.xml
+      reports: $(Build.SourcesDirectory)/**/*cobertura.xml
       targetdir: $(Build.ArtifactStagingDirectory)/CodeCoverage/$(Agent.JobName)
-      reporttypes: Cobertura
+      reporttypes: Cobertura;SonarQube
   - publish: $(Build.ArtifactStagingDirectory)/CodeCoverage/$(Agent.JobName)
     condition: and(succeeded(), or(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['integrationTests'], 'true')))
     displayName: Publish code coverage artifacts
