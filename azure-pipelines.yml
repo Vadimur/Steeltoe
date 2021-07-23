@@ -95,7 +95,7 @@ jobs:
       organization: steeltoeoss
       projectKey: SteeltoeOSS_steeltoe
       extraProperties: |
-          sonar.coverageReportPaths=$(Build.ArtifactStagingDirectory)/CodeCoverage/*/SonarQube.xml
+          sonar.coverageReportPaths=$(Build.ArtifactStagingDirectory)/CodeCoverage/$(Agent.JobName)/SonarQube.xml
           sonar.cs.vstest.reportsPaths=$(Build.SourcesDirectory)/*.trx
           sonar.exclusions=$(Build.SourcesDirectory)/src/Management/src/Diagnostics*
           sonar.coverage.exclusions=**/test/**/*
