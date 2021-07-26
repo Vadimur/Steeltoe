@@ -57,7 +57,7 @@
     <HealthChecksRedisVersion>2.2.3</HealthChecksRedisVersion>
     <HealthChecksSqlServerVersion>2.2.0</HealthChecksSqlServerVersion>
 
-    <SonarAnalyzerVersion>8.22.0.31243</SonarAnalyzerVersion>
+    <SonarAnalyzerVersion>8.26.0.34506</SonarAnalyzerVersion>
     <SourceLinkGitHubVersion>1.0.0</SourceLinkGitHubVersion>
     <StyleCopVersion>1.1.118</StyleCopVersion>
 
