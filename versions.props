@@ -40,8 +40,8 @@
     <MockHttpVersion>6.0.0</MockHttpVersion>
     <MoqVersion>4.13.1</MoqVersion>
     
-    <OpenTelemetryVersion>1.1.0</OpenTelemetryVersion>
-    <OpenTelemetryInstrumentationVersion>1.0.0-rc7</OpenTelemetryInstrumentationVersion>
+    <OpenTelemetryVersion>1.2.0-beta1</OpenTelemetryVersion>
+    <OpenTelemetryInstrumentationVersion>1.0.0-rc8</OpenTelemetryInstrumentationVersion>
     
     <RabbitClientVersion>5.0.1</RabbitClientVersion>
     <ReactiveVersion>4.1.5</ReactiveVersion>
@@ -90,5 +90,17 @@
     <NpgsqlEFCoreVersion>5.0.0</NpgsqlEFCoreVersion>
     <OracleEFCoreVersion>5.21.1</OracleEFCoreVersion>
     <PomeloEFCoreVersion>5.0.0-alpha.2</PomeloEFCoreVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net6.0'">
+    <AspNetCoreVersion>6.0.0-rc.2.*</AspNetCoreVersion>
+    <EFCoreTestVersion>6.0.0-rc.1.21452.10</EFCoreTestVersion>
+    <MySqlEFCoreVersion>6.0.0-preview3</MySqlEFCoreVersion>
+    <NpgsqlEFCoreVersion>6.0.0-rc.1</NpgsqlEFCoreVersion>
+    <OracleEFCoreVersion>5.21.1</OracleEFCoreVersion>
+    <PomeloEFCoreVersion>6.0.0-rc.1</PomeloEFCoreVersion>
+    <EF6Version>6.4.0</EF6Version>
+    <ExtensionsVersion>6.0.0-rc.2.*</ExtensionsVersion>
+    <MicrosoftExtensionsRedisVersion>6.0.0</MicrosoftExtensionsRedisVersion>
+    <SystemJsonVersion>6.0.0</SystemJsonVersion>
   </PropertyGroup>
 </Project>
