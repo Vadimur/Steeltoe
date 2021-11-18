@@ -83,7 +83,7 @@ jobs:
     displayName: Publish build artifacts
     artifact: Packages
 - job: Steeltoe_CI
-  timeoutInMinutes: 60
+  timeoutInMinutes: 90
   variables:
     DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
     DOTNET_CLI_TELEMETRY_OPTOUT: 1
