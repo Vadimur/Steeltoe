@@ -265,7 +265,7 @@ namespace Steeltoe.Extensions.Logging.Test
             // assert
             Assert.NotNull(options);
 #pragma warning disable CS0618 // Type or member is obsolete
-            Assert.True(options.Value.DisableColors);
+            Assert.False(options.Value.DisableColors);
 #pragma warning restore CS0618 // Type or member is obsolete
         }
 
